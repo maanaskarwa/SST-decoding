@@ -1,0 +1,48 @@
+[campaign]
+name = 'smoke'
+output_root = 'sst_campaign_runs'
+device = 'cpu'
+random_state = 9
+train_subjects = ['1', '2']
+models = ['cnn_transformer', 'transformer_only', 'pure_cnn', 'enigma']
+
+[baseline]
+enabled = true
+epochs = 1
+patience = 1
+batch_size = 16
+n_splits = 2
+val_fraction = 0.2
+
+[loso]
+enabled = true
+epochs = 1
+patience = 1
+batch_size = 16
+val_fraction = 0.2
+
+[interpretability]
+enabled = true
+ig_steps = 4
+ig_batch_size = 4
+max_stop_samples = 16
+max_go_samples = 16
+p3_tmin = 0.25
+p3_tmax = 0.45
+
+[explainers]
+enabled = true
+methods = ['deeplift', 'cam', 'am']
+explainer_batch_size = 2
+max_samples = 4
+max_surrogate_samples = 2
+lime_samples = 8
+shap_samples = 8
+am_steps = 8
+
+[attention]
+enabled = true
+batch_size = 8
+max_samples = 8
+p3_tmin = 0.25
+p3_tmax = 0.45

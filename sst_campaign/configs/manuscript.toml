@@ -1,0 +1,20 @@
+[manuscript]
+root = "."
+random_state = 9
+model_order = ["cnn_transformer", "transformer_only", "pure_cnn", "enigma"]
+primary_model = "cnn_transformer"
+
+[behavior]
+enabled = true
+n_correlation_permutations = 10000
+
+[p3_ablation]
+enabled = true
+model = "cnn_transformer"
+device = "cuda"
+batch_size = 128
+random_state = 9
+p3_tmin = 0.25
+p3_tmax = 0.45
+cudnn_benchmark = false
+matmul_precision = "high"

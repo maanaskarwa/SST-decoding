@@ -1,0 +1,19 @@
+[project]
+name = "sst-decoding"
+version = "0.1.0"
+description = "EEG stop-vs-go decoding experiments and interpretability analyses."
+requires-python = ">=3.14,<3.15"
+dependencies = [
+  "captum==0.8.0",
+  "matplotlib==3.10.8",
+  "mne==1.11.0",
+  "numpy==1.26.4",
+  "pandas==2.3.3",
+  "scikit-learn==1.8.0",
+  "scipy==1.17.1",
+  "torch==2.11.0",
+]
+
+[tool.uv]
+environments = ["sys_platform == 'linux'"]
+package = false

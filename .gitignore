@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+*.py[cod]
+# Local data and generated outputs.
+erp/
+preprocessed/
+ICApruned/
+sst_campaign_runs/

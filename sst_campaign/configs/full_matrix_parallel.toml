@@ -1,0 +1,85 @@
+[campaign]
+name = 'full_matrix_parallel'
+output_root = 'sst_campaign_runs'
+device = 'cuda'
+random_state = 9
+train_subjects = ['all']
+# Keep lighter CNN-family models before transformer-family models so the weighted
+# scheduler can overlap light jobs while limiting heavy transformer contention.
+models = ['pure_cnn', 'enigma', 'cnn_transformer', 'transformer_only']
+
+[parallel]
+enabled = true
+# Upper bound on simultaneously running child processes. Keep this conservative:
+# the 2026-04-30 six-process run was slower than the serial reference because
+# concurrent PyTorch/DataLoader jobs contended for CPU/GPU resources.
+max_tasks = 4
+# Weighted GPU admission control. Transformer-family jobs consume all slots and
+# run alone; lighter CNN-family jobs consume one slot and can overlap.
+max_gpu_slots = 18
+default_gpu_slots = 1
+
+[parallel.experiment_gpu_slots]
+# Posthoc runs are short independent jobs; overlap them after
+# their source models finish instead of serializing each phase.
+interpretability = 1
+explainer_suite = 1
+
+[parallel.model_gpu_slots]
+# Full transformer-family training is heavier than CNN-style jobs, but it can
+# overlap one-at-a-time with light jobs. Slot cost 9 prevents two full
+# transformer jobs from running together while avoiding a transformer-only tail.
+cnn_transformer = 9
+transformer_only = 9
+pure_cnn = 1
+enigma = 1
+
+[performance]
+num_workers = 1
+prefetch_factor = 2
+persistent_workers = true
+cudnn_benchmark = true
+matmul_precision = 'high'
+amp = true
+amp_dtype = 'bfloat16'
+
+[baseline]
+enabled = true
+epochs = 40
+patience = 8
+batch_size = 64
+n_splits = 5
+val_fraction = 0.15
+
+[loso]
+enabled = true
+epochs = 40
+patience = 8
+batch_size = 64
+val_fraction = 0.15
+
+[interpretability]
+enabled = true
+ig_steps = 32
+ig_batch_size = 32
+max_stop_samples = 256
+max_go_samples = 256
+p3_tmin = 0.25
+p3_tmax = 0.45
+
+[explainers]
+enabled = true
+methods = ['deeplift', 'cam', 'lime', 'shap', 'am']
+explainer_batch_size = 16
+max_samples = 64
+max_surrogate_samples = 8
+lime_samples = 64
+shap_samples = 64
+am_steps = 200
+
+[attention]
+enabled = true
+batch_size = 64
+max_samples = 128
+p3_tmin = 0.25
+p3_tmax = 0.45

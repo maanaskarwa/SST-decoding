@@ -1,0 +1,12 @@
+marker code
+
+1 = go signal
+2 = stop signal
+3 = end of trial, go correct
+4 = end of trial, go incorrect
+5 = end of trial, stop correct   (successful stop)
+6 = end of trial, stop incorrect (failed stop)
+9 = response
+
+
+10 = beginning of each block
